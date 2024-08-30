@@ -1,0 +1,133 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" 
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  clerkId    String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  zaps       Zap[]
+}
+
+model Trigger {
+  id          String  @id
+  name        String
+  image        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  zapSteps    ZapStep[]
+}
+model WebhookData{
+  id   Int  @id @default(autoincrement())
+  data    Json?
+  
+}
+
+model AvailableTrigger {
+  id     String @id
+  name   String
+  image  String
+}
+
+model AvailableAction {
+  id String @id
+  name String
+  image  String
+}
+
+model Action {
+  id          String       @id 
+  name        String
+  image       String
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  zapSteps    ZapStep[]
+}
+
+model Zap {
+  id        String       @id 
+  userId    Int   
+  name      String
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id])
+  zapSteps  ZapStep[]
+  zapRuns   ZapRun[]
+}
+
+model ZapStep {
+  id          String       @id @default(uuid())
+  zapId       String
+  stepType    StepType
+  triggerId   String?
+  actionId    String?
+  orderPosition Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  zap         Zap       @relation(fields: [zapId], references: [id])
+  trigger     Trigger?  @relation(fields: [triggerId], references: [id])
+  action      Action?   @relation(fields: [actionId], references: [id])
+  zapLogs     ZapLog[]
+}
+
+
+
+
+model ZapRun {
+  id          Int       @id @default(autoincrement())
+  zapId       String
+  status      RunStatus
+  errorMessage String?
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  zap         Zap       @relation(fields: [zapId], references: [id])
+  zapLogs     ZapLog[]
+}
+
+model ZapLog {
+  id          Int       @id @default(autoincrement())
+  zapRunId    Int
+  zapStepId   String?
+  logMessage  String
+  logType     LogType
+  createdAt   DateTime  @default(now())
+
+  zapRun      ZapRun    @relation(fields: [zapRunId], references: [id])
+  zapStep     ZapStep?  @relation(fields: [zapStepId], references: [id])
+}
+
+// Enums
+enum StepType {
+  TRIGGER
+  ACTION
+}
+
+enum RunStatus {
+  PENDING
+  SUCCESS
+  FAILURE
+}
+
+enum LogType {
+  INFO
+  WARNING
+  ERROR
+}
