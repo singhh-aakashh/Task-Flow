@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+model User {
+  id        String      @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  zaps      Zap[]
+}
+
+model Trigger {
+  id          String    @id @default(uuid())
+  name        String
+  image       String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  zapSteps    ZapStep[]
+}
+
+
+model Action {
+  id        String    @id @default(uuid())
+  name      String
+  image     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  zapSteps  ZapStep[]
+}
+
+model Zap {
+  id        String    @id @default(uuid())
+  userId    String
+  name      String
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id])
+  zapRuns   ZapRun[]
+  zapSteps  ZapStep[]
+}
+
+model ZapStep {
+  id            String   @id @default(uuid())
+  zapId         String
+  stepType      StepType
+  triggerId     String?
+  actionId      String?
+  orderPosition Int
+  metaData      Json  @default("{}")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  zapLogs       ZapLog[]
+  action        Action?  @relation(fields: [actionId], references: [id])
+  trigger       Trigger? @relation(fields: [triggerId], references: [id])
+  zap           Zap      @relation(fields: [zapId], references: [id])
+}
+
+model ZapRun {
+  id           Int           @id @default(autoincrement())
+  zapId        String
+  status       RunStatus
+  metaData     Json          @default("{}")
+  errorMessage String?
+  startedAt    DateTime      @default(now())
+  completedAt  DateTime?
+  zapLogs      ZapLog[]
+  zap          Zap           @relation(fields: [zapId], references: [id])
+  zapRunOutBox ZapRunOutBox?
+}
+
+model ZapRunOutBox {
+  id       Int    @id @default(autoincrement())
+  zapRunId Int    @unique
+  zapRun   ZapRun @relation(fields: [zapRunId], references: [id])
+}
+
+model ZapLog {
+  id         Int      @id @default(autoincrement())
+  zapRunId   Int
+  zapStepId  String?
+  logMessage String
+  logType    LogType
+  createdAt  DateTime @default(now())
+  zapRun     ZapRun   @relation(fields: [zapRunId], references: [id])
+  zapStep    ZapStep? @relation(fields: [zapStepId], references: [id])
+}
+
+enum StepType {
+  TRIGGER
+  ACTION
+}
+
+enum RunStatus {
+  PENDING
+  SUCCESS
+  FAILURE
+}
+
+enum LogType {
+  INFO
+  WARNING
+  ERROR
+}

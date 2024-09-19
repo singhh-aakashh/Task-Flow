@@ -11,7 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { UserButton } from '@clerk/nextjs'
+import { UserAvatar } from '../app-ui/user-avatar'
 
 
 type Props = {}
@@ -32,8 +32,7 @@ const InfoBar = (props: Props) => {
           className="border-none bg-transparent"
         />
       </span>
-     
-      <UserButton />
+     <UserAvatar/>
     </div>
     </div>
   )

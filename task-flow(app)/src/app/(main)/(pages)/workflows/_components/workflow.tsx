@@ -5,8 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-export default function Workflow() {
-  const zapState = useZapStore();
+interface prop{
+  type:"New"|"Old",
+  zap?:any
+}
+
+export default function Workflow({type,zap}:prop) {
+  let zapState = useZapStore();
+  if(zap){
+    zapState=zap;
+  }
   return (
     <div className="flex flex-col p-10 min-h-[40rem] gap-4 bg-dot-slate-800 ">
       <Input
@@ -31,11 +39,6 @@ export default function Workflow() {
           onClick={() => zapState.addZapStep()}
         >
           <Plus />
-        </Button>
-        <Button
-        variant={"outline"}
-        onClick={()=>console.log(zapState)}>
-         console
         </Button>
       </div>
     </div>

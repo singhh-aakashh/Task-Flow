@@ -28,10 +28,10 @@ const ShowOption = ({ Options , cardId , stepType}: Props) => {
     <Dialog open={isOpen} onOpenChange={setClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Select Trigger</DialogTitle>
+          <DialogTitle>Select {stepType}</DialogTitle>
         </DialogHeader>
        {
-        Options?.map((option) => <OptionCard stepType={stepType} id={option.id} cardId={cardId} name={option.name} image={option.image}/>)
+        Options?.map((option) => <OptionCard key={option.id} stepType={stepType} id={option.id} cardId={cardId} name={option.name} image={option.image}/>)
        }
       </DialogContent>
     </Dialog>

@@ -1,6 +1,51 @@
 "use server"
-import { currentUser } from "@clerk/nextjs/server"
+import { cookies } from "next/headers"
 import { db } from "./db"
+
+
+export const deleteZap = async (zapId:string) => {
+    const userId = cookies().get("userId")?.value;
+    if(userId && zapId){
+        try {
+            const deleteZap = await db.zap.delete({
+                where:{
+                    id:zapId
+                }
+            })
+            return ({status:"success",msg:"Deleted Successfully"})
+        } catch (error) {
+            console.log(error);
+            return ({status:"failed",msg:"Something went wrong"})
+        }
+    }
+}
+
+export const getCurrentUser = async () =>{
+    const userId = cookies().get("userId")?.value;
+    if(userId){
+        try {
+            const user = await db.user.findFirst({
+                where:{
+                    id:userId
+                }
+            })
+            if(user){
+                return user;
+            }
+            else{
+                console.log("user is not present for this id")
+                return null;
+            }
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+    else{
+        console.log("user id is not present")
+        return null;
+    }
+}
 
     export const getTrigger = async (trigger:string) =>{
     console.log("inside get trigger")
@@ -14,6 +59,62 @@ import { db } from "./db"
     } catch (error) {
       console.log("eror",error)
       return null;
+    }
+   }
+
+   export const getUserByEmail = async (email:string) => {
+        try {
+            const user = await db.user.findFirst({
+                where:{
+                    email
+                },
+                select:{
+                    id:true,
+                    password:true,
+                    name:true,
+                    email:true
+                }
+            })
+            if(user){
+                return user;
+            }
+            else{
+                console.log("User with this email is not present");
+                return null;
+            }
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    }
+   
+
+   export const getZapById = async (zapId:string) =>{
+    if(zapId){
+        try {
+            const zap = await db.zap.findFirst({
+                where:{
+                    id:zapId
+                },
+                include:{
+                    zapSteps:true
+                }
+            })
+            if(zap){
+                return zap;
+            }
+            else{
+                console.log("zap with this zapId is not present")
+                return null;
+            }
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+    else{
+        console.log("zapId is not present")
+        return null;
     }
    }
 
@@ -32,15 +133,7 @@ import { db } from "./db"
     }
    }
 
-   export const getwebhookdata = async ()=>{
-    try {
-        const web = await db.webhookData.findFirst({})
-        return web
-    } catch (error) {
-        console.log("error",error)
-        return null;
-    }
-   }
+
 
    export const getAvailableAction = async () =>{
     try {
@@ -62,12 +155,16 @@ import { db } from "./db"
     }
    }
 
-   export const getUserZaps = async (id:number) =>{
-    //WIP: extract user
+   export const getUserZaps = async () =>{
+    const userId = cookies().get("userId")?.value;
+    if(userId){
     try {
         const zaps = await db.zap.findMany({
-            where:{userId:id},
-            include:{
+            where:{userId:userId},
+            select:{
+                id:true,
+                name:true,
+                isActive:true,
                 zapSteps:{
                     include:{
                         trigger:true,
@@ -80,34 +177,18 @@ import { db } from "./db"
             return zaps;
         }
         else{
+            console.log("zaps are not present")
             return null;
         }
     } catch (error) {
         console.log(error);
         return null;
     }
+}
+else{
+    console.log("userId is not present")
+    return null;
+}
    }
 
-   export const getCurrentUserId = async () =>{
-    const user = await currentUser()
-    if(user?.id){
-        try {
-            const getuser = await db.user.findFirst({where:{clerkId:user.id}})
-            if(getuser){
-                if('id' in getuser){
-                return getuser.id;
-                }else{
-                    return null;
-                }
-            }else{
-                return null;
-            }
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    }
-    else{
-        return null;
-    }
-   }
+
