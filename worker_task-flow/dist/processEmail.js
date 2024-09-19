@@ -69,7 +69,7 @@ function sendGmail(from, to, body, subject) {
             const info = yield transporter.sendMail({
                 from: from, // sender address
                 to: to, // list of receivers
-                subject: `<h1>Nike</h1>`,
+                subject: subject,
                 //   text: body, // plain text body
                 html: `${body}`, // html body
             });
@@ -83,11 +83,11 @@ function sendGmail(from, to, body, subject) {
     });
 }
 const processEmail = (ActionMetaData, zapMetaData) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("action meta data", ActionMetaData);
-    console.log("action meta data from", ActionMetaData.from);
+    // console.log("action meta data",ActionMetaData)
+    // console.log("action meta data from",ActionMetaData.from)
     const from = parser(ActionMetaData.from, zapMetaData);
     const to = parser(ActionMetaData.to, zapMetaData);
-    // const subject = parser(ActionMetaData.subject as string,zapMetaData)
+    const subject = parser(ActionMetaData.subject, zapMetaData);
     const body = parser(ActionMetaData.body, zapMetaData);
     //     const body =`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     // <html dir="ltr" lang="en">
@@ -368,6 +368,6 @@ const processEmail = (ActionMetaData, zapMetaData) => __awaiter(void 0, void 0, 
     //   </body>
     // </html>`
     console.log(`from ${from} to ${to}`);
-    sendGmail(from, to, body, "Subject");
+    sendGmail(from, to, body, subject);
 });
 exports.processEmail = processEmail;

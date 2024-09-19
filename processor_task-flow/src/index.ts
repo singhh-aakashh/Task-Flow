@@ -9,6 +9,10 @@ const app = new Hono<{
   },
 }>()
 
+app.get("/",(c)=>{
+  return c.text("Backend is live...")
+})
+
 app.post('/hook/:zapId',async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -16,9 +20,9 @@ app.post('/hook/:zapId',async (c) => {
   const body = await c.req.json();
   const zapId = c.req.param('zapId');
   if(zapId){
-    // console.log("here in if")
+    
   try {
-    // console.log("here in try")
+   
     const tran = await prisma.$transaction(async (tx:any) =>{
       const zapRun = await tx.zapRun.create({
         data:{

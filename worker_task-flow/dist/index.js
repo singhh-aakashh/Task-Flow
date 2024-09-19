@@ -74,7 +74,6 @@ const consumer = () => __awaiter(void 0, void 0, void 0, function* () {
                     console.log("processing..");
                     const zap = yield processEvent(event[1]);
                     if (zap) {
-                        console.log("inside zap");
                         // Avoiding trigger
                         if (Number(event[3]) !== 0) {
                             //   console.log("zap meta data is",zap?.metaData)
