@@ -10,7 +10,7 @@ import { NextRequest } from "next/server";
   "/sign-up"
 ]
 
- const apiAuthPrefix = "/api/auth";
+ const apiAuthPrefix = "/api";
 
 
 export default function middleware(req:NextRequest){
@@ -31,7 +31,7 @@ export default function middleware(req:NextRequest){
         return null;
     }
     if(!userId && !isPublicRoute){
-        return Response.redirect(new URL("/auth/login",nextUrl))
+        return Response.redirect(new URL("/sign-in",nextUrl))
     }
 
 }
