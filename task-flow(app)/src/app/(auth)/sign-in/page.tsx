@@ -48,7 +48,6 @@ export default function SignIn() {
     if(res.msg){
       toast({ title: res.msg });
     }
-  
     if (res.status === "success") {
       router.push("/dashboard");
     }

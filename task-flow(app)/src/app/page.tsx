@@ -1,4 +1,5 @@
 
+import { ImagesSliderDemo } from "@/components/app-ui/image-slider";
 import Navbar from "@/components/global/navbar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -26,13 +27,9 @@ export default function Home() {
           </span>
           </Link>
         </Button>
-        <div className="max-w-5xl mt-4 mx-auto h-[30rem] md:h-[600px] w-full  p-6 bg-[#222222] rounded-[30px] shadow-2xl">
+        <div className="max-w-6xl mt-4  h-[30rem] md:h-[680px] w-[70rem]  p-6 bg-[#222222] rounded-[30px] shadow-2xl">
           <div className="bg-gray-100 h-full w-full rounded-2xl  gap-4 overflow-hidden  transition-all ">
-            <img
-              src="/work.png"
-              alt="bannerImage"
-              className="object-cover w-fit h-fit border-8 rounded-2xl"
-            />
+           <ImagesSliderDemo/>
           </div>
         </div>
       </div>
