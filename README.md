@@ -2,6 +2,23 @@
 
 **TaskFlow** is a powerful **automation** platform designed to help users streamline their workflows. It allows users to create custom workflows that respond to specific triggers, making it easier to automate repetitive tasks and save time. 
 
+## Technologies Used
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![Hono](https://img.shields.io/badge/Hono.js-ff7f00?style=for-the-badge)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-333333?style=for-the-badge&logo=zustand&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-734F96?style=for-the-badge)
+![React Hook Form](https://img.shields.io/badge/React_Hook_Form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white)
+![ShadCN](https://img.shields.io/badge/ShadCN-3B82F6?style=for-the-badge)
+
+
+
 ## Features
 
 - **Webhook Trigger**: Users can create workflows that are triggered by webhooks. This allows external services or applications to initiate workflows within TaskFlow when certain events occur.
