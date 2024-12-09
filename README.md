@@ -44,7 +44,7 @@
 TaskFlow simplifies complex workflows, making automation accessible to everyone, while ensuring reliable and orderly execution of each task.
 
 ## Architecture
-![TaskFlow Architecture](./taskflow.png)
+![TaskFlow Architecture](./public//taskflow.png)
 
 - **task-flow(app)**: It is a nextjs app that lets you create workflows and manage it, it provides you webhook trigger link.
 

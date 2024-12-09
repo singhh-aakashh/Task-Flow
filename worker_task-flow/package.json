@@ -15,6 +15,7 @@
     "@types/ioredis": "^5.0.0",
     "ioredis": "^5.4.1",
     "nodemailer": "^6.9.15",
+    "openai": "^4.75.0",
     "redis": "^4.7.0"
   },
   "devDependencies": {
